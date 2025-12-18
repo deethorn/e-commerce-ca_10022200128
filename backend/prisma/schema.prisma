@@ -1,0 +1,125 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PENDING_VERIFICATION
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PENDING_VERIFICATION
+  APPROVED
+  REJECTED
+}
+
+enum ProductCategory {
+  ELECTRONICS
+  FASHION
+  HOME_ESSENTIALS
+  BOOKS
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  role              UserRole  @default(CUSTOMER)
+  orders            Order[]
+  cart              Cart?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  @@index([email])
+  @@map("users")
+}
+
+model Product {
+  id                String    @id @default(cuid())
+  name              String    @unique
+  description       String    @db.Text
+  price             Float
+  category          ProductCategory
+  stock             Int       @default(0)
+  rating            Float     @default(0)
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  @@index([category])
+  @@index([name])
+  @@map("products")
+}
+
+model Cart {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items             CartItem[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  @@map("carts")
+}
+
+model CartItem {
+  id                String    @id @default(cuid())
+  quantity          Int       @default(1)
+  cartId            String
+  cart              Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId         String
+  product           Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  @@unique([cartId, productId])
+  @@map("cart_items")
+}
+
+model Order {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items             OrderItem[]
+  totalAmount       Float
+  status            OrderStatus @default(PENDING)
+  paymentProof      String?   @db.Text
+  paymentStatus     PaymentStatus @default(PENDING)
+  shippingAddress   String    @db.Text
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  @@index([userId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id                String    @id @default(cuid())
+  quantity          Int
+  priceAtPurchase   Float
+  orderId           String
+  order             Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId         String
+  product           Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  createdAt         DateTime  @default(now())
+  @@unique([orderId, productId])
+  @@map("order_items")
+}

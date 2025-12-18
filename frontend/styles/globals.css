@@ -1,0 +1,74 @@
+@import "tailwindcss";
+:root {
+  --primary: #2d372e;
+  --secondary: #000000;
+  --accent: #ffffff;
+}
+
+/* Global Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: #b6bfe1;
+  color: #080000;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--secondary);
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm p-4;
+}
+
+.card:hover {
+  @apply shadow-md transition-shadow;
+}
+
+/* Button Styles */
+.btn {
+  @apply px-4 py-2 rounded font-medium transition-colors;
+}
+
+.btn-primary {
+  @apply bg-gray-800 text-white hover:bg-gray-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+.btn-outline {
+  @apply border-2 border-gray-800 text-gray-800 hover:bg-gray-50;
+}
+
+/* Error/Success Messages */
+.error-message {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded;
+}
+
+.success-message {
+  @apply bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded;
+}
+
+/* Loading State */
+.loading {
+  @apply opacity-60 pointer-events-none;
+}
+
+/* Product Grid */
+.product-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+/* Responsive Container */
+.container-custom {
+  @apply max-w-6xl mx-auto px-4;
+}
