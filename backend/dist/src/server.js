@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({
-    origin: process.env.CORS_ORIGIN || 'http://https://e-commerce-ca-10022200128.vercel.app/',
+    origin: process.env.CORS_ORIGIN || 'http://https://e-commerce-ca-10022200128-2.vercel.app/',
     credentials: true
 }));
 app.use(express_1.default.json());
