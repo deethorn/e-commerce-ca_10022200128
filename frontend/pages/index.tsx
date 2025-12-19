@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Home() {
   useEffect(() => {
    
-    fetch('http://localhost:3001/api/health')
+    fetch('https://e-commerce-ca-10022200128-2.onrender.com/api/health')
       .then(res => res.json())
       .then(data => console.log('Backend response:', data))
       .catch(err => console.error('Backend error:', err));
