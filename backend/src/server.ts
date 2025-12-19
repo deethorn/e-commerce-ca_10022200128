@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'https://e-commerce-ca-10022200128.vercel.app/',
+  origin: process.env.CORS_ORIGIN || 'https://e-commerce-ca-10022200128.vercel.app',
   credentials: true
 }));
 app.use(express.json());
